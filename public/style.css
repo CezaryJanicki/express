@@ -1,4 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+body {
+  background: #42609e;
+  color: #d31f1f;
+  font-family: 'Open Sans', sans-serif;
+  padding: 30px;
+  text-align: center;
+}
+
 h1 {
-    font-weight: lighter;
-    font-style: italic;
-  }
+  font-weight: lighter;
+}
+
+p {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+a {
+  color: #999;
+  font-size: 0.8rem;
+}
