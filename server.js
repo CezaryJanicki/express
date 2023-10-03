@@ -1,14 +1,16 @@
 const express = require('express');
 const path = require('path');
 const hbs = require('express-handlebars');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 app.engine('hbs', hbs({ extname: 'hbs', layoutsDir: './layouts', defaultLayout: 'main' }));
 app.set('view engine', 'hbs');
 
 app.use(express.static(path.join(__dirname, '/public')));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(fileUpload({ createParentPath: true }));
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -35,15 +37,21 @@ app.get('/history', (req, res) => {
 });
 
 app.post('/contact/send-message', (req, res) => {
-  const { author, sender, title, message } = req.body;
 
-  if(author && sender && title && message) {
-    res.render('contact', { isSent: true });
+  const { author, sender, title, message} = req.body;
+  let image = req.files.image;
+
+  image.mv('./public/' + image.name);
+
+  if(author && sender && title && message && (image.mimetype === 'image/png' || 'image/jpg' || 'image/jpeg' || 'image/gif')) {
+    res.render('contact', { isSent: true, filename: image.name });
   }
   else {
-    res.render('contact', { isError: true });
+    res.render('contact', { isError: true});
   }
+
 });
+
 
 app.use((req, res) => {
   res.status(404).send('404 not found...');
